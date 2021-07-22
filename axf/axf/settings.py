@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -39,10 +40,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
+    'django_filters',
     'home',
     'cart',
     'user',
     'market',
+    'order',
 ]
 
 MIDDLEWARE = [
@@ -61,7 +64,7 @@ ROOT_URLCONF = 'axf.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -82,8 +85,12 @@ WSGI_APPLICATION = 'axf.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'axf',
+        'HOST': '127.0.0.1',
+        'USER': 'super',
+        'PASSWORD': 'mysql',
+        'PORT': 3306,
     }
 }
 
@@ -129,6 +136,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR,'static')
 ]
 
+
 # 处理跨域
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True
@@ -158,3 +166,31 @@ CORS_ALLOW_HEADERS = (
     'x-csrftoken',
     'x-requested-with',
 )
+
+# 排序规则，定义全局变量
+ORDER_RULE_LIST = [
+    {'order_name': '综合排序', 'order_value': 0},
+    {'order_name': '价格升序', 'order_value': 1},
+    {'order_name': '价格降序', 'order_value': 2},
+    {'order_name': '销量升序', 'order_value': 3},
+    {'order_name': '销量降序', 'order_value': 4}
+]
+
+# 订单状态
+# 已下订单未支付
+ORDER_STATUS_NOT_PAY = 0
+# 已下单已支付
+ORDER_STATUS_PAY = 1
+# 已付款未发货
+ORDER_STATUS_NOT_SEND = 2
+# 已发货未收货
+ORDER_STATUS_NOT_RECEIVE = 3
+# 已收货未确认
+# 已确认未评价
+# 已确认已评价
+# 已确认未评价
+
+# rest_framework配置
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
+}
