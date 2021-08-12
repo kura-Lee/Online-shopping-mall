@@ -194,3 +194,10 @@ ORDER_STATUS_NOT_RECEIVE = 3
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
 }
+
+#应⽤用程序私钥
+APP_PRIVATE_KEY = open(os.path.join(BASE_DIR,'alipay/ali_pay_private_key.pem')).read()
+#⽀支付宝公钥
+ALIPAY_PUBLIC_KEY = open(os.path.join(BASE_DIR,'alipay/ali_app_public_key.pem')).read()
+#沙箱APPID
+ALI_APP_ID = "2021000117693575"
